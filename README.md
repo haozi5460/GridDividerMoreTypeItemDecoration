@@ -5,8 +5,8 @@ this is for there are more than two type of Item  gridLayoutManager decoration
 
 而这个GridDividerMoreTypeItemDecoartion
 先上个图片
-![图一](https://github.com/haozi5460/GridDividerMoreTypeItemDecoration/blob/master/WechatIMG292.jpeg)
-![图二](https://github.com/haozi5460/GridDividerMoreTypeItemDecoration/blob/master/WechatIMG293.jpeg)
+![图一](https://github.com/haozi5460/GridDividerMoreTypeItemDecoration/blob/master/WX20181203-174630.png)
+![图二](https://github.com/haozi5460/GridDividerMoreTypeItemDecoration/blob/master/WX20181203-174644.png)
 
 如果一般第一眼看到这个功能我们首先想到的是RecyclerView嵌套recyclerView了。 这种和符合大众思维，也好做。
 
