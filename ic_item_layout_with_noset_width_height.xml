@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/pending_upload_sub_item_text_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/pending_upload_sub_item_bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="1.5px"
+            android:layout_marginBottom="@dimen/common_size_20dp"
+            android:background="@drawable/pending_upload_sub_shape_line_dash" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pending_upload_sub_item_bottom_line"
+            android:background="@color/common_white_text_color">
+            <TextView
+                android:id="@+id/pending_upload_sub_item_attachment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/common_text_size_15sp"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_vertical"
+                android:text="@string/Check_in" />
+
+            <TextView
+                android:id="@+id/pending_upload_sub_item_attachment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/common_lst_item_text_color_c"
+                android:text="04:00 PM"
+                android:paddingRight="@dimen/common_size_10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/common_size_15dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/pending_upload_sub_item_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:failureImage="@drawable/ic_imageload_failed"
+        app:failureImageScaleType="fitXY"
+        app:progressBarImage="@drawable/ic_imageloading"
+        app:progressBarImageScaleType="fitXY"/>
+</FrameLayout>
