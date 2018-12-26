@@ -36,3 +36,5 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 recyclerView.addItemDecoration(new GridDividerMoreTypeItemDecoration(this,Utils.dp2px(this,20)
                 ,Utils.dp2px(this,15),true));
 ```
+
+另有简书自撸文章[《不嵌套RecyclerView！！!实现有HeaderView的GridLayoutManager》](https://www.jianshu.com/p/ea4d9843dada)
