@@ -1,10 +1,11 @@
 package com.starlight.mobile.android.smsone.common;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,9 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,6 +32,7 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
     private boolean isLastRowNeedSpace = false;//最后一行是否需要间隔(默认不需要)
     int spanCount = 0;
     private Context mContext;
+    private Path mPath = null;
     /**
      * 意思是存储每一个个HeadView 的之前所有Item包括自己的数量
      */
@@ -69,7 +69,7 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
      * @param isLastRowNeedSpace 最后一行是否需要间隔
      */
     public GridDividerMoreTypeItemDecoration(Context context, int dividerWidth, int firstRowTopMargin, boolean isNeedSpace, boolean isLastRowNeedSpace) {
-        this(context,dividerWidth,firstRowTopMargin,isNeedSpace,isLastRowNeedSpace, Color.WHITE);
+        this(context,dividerWidth,firstRowTopMargin,isNeedSpace,isLastRowNeedSpace, Color.GRAY);
     }
 
     /**
@@ -86,8 +86,11 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
         this.mFirstRowTopMargin = firstRowTopMargin;
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(color);
-        mPaint.setStyle(Paint.Style.FILL);
+//        mPaint.setColor(color);
+        mPaint.setColor(Color.parseColor("#d6d6d6"));
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setPathEffect(new DashPathEffect(new float[]{10,5},0));
+        mPath = new Path();
     }
 
     @Override
@@ -110,7 +113,7 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
             left = mDividerWidth;
             right = mDividerWidth;
             bottom = 0;
-            top = mDividerWidth;
+            top = itemPosition == 0 ? mDividerWidth : 2*mDividerWidth;//为了画分隔线，第一行HeaderView不需要画分隔线
 
             if(!headPositionTotalCountMap.containsKey(itemPosition)) {
                 headPositionTotalCountMap.put(itemPosition,itemPosition+1);
@@ -135,14 +138,6 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
             right = eachItemWidth - left;
             bottom = 0;
             top = mDividerWidth;
-//            if(isLastRowforMoreType()){
-//                bottom = 0;
-//            }
-//            if (mFirstRowTopMargin > 0 && isFirstRow(parent, itemPosition, spanCount, childCount))//第一行顶部是否需要间隔
-//                top = mFirstRowTopMargin;
-//            if (!isLastRowNeedSpace && isLastRow(parent, itemPosition, spanCount, childCount)) {//最后一行是否需要间隔
-//                bottom = 0;
-//            }
         }
 
         outRect.set(left, top, right, bottom);
@@ -205,12 +200,33 @@ public class GridDividerMoreTypeItemDecoration extends RecyclerView.ItemDecorati
         return itemWidth;
     }
 
-//    @Override
-//    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-//        super.onDraw(c, parent, state);
-//        draw(c, parent);
-//    }
-//
+    @Override
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDraw(c, parent, state);
+        draw(c, parent);
+    }
+
+    //绘制不同HeadView之间虚线分割线
+    private void draw(Canvas canvas, RecyclerView parent) {
+        int width = mContext.getResources().getDisplayMetrics().widthPixels > mContext.getResources().getDisplayMetrics().heightPixels
+                ? mContext.getResources().getDisplayMetrics().heightPixels : mContext.getResources().getDisplayMetrics().widthPixels;
+        int spanCount = getSpanCount(parent);
+
+        int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = parent.getChildAt(i);
+            int itemPosition = ((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition();
+            int spanSize = getSpanSize(itemPosition,parent);
+
+            if(spanCount == spanSize && itemPosition != 0){
+                mPath.reset();
+                mPath.moveTo(child.getLeft()-5,child.getTop()-mDividerWidth);
+                mPath.lineTo(width-mDividerWidth+5,child.getTop()-mDividerWidth);
+                canvas.drawPath(mPath,mPaint);
+            }
+        }
+    }
+
 //    //绘制item分割线
 //    private void draw(Canvas canvas, RecyclerView parent) {
 //        int childCount = parent.getChildCount();
